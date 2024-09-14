@@ -1,0 +1,73 @@
+
+create database ventas;
+use ventas;
+
+
+create table productos(
+id_productos int not null auto_increment, 
+productos_descripcion varchar(25), 
+productos_pu float, 
+productos_estado varchar(15), 
+productos_estado_vencimiento varchar(25),
+primary key (id_productos));
+
+
+create table rubros(
+id_rubros int not null auto_increment, 
+rubros_descripcion varchar(45), 
+primary key(id_rubros));
+
+
+create table sucursales(
+id_sucursales int not null auto_increment, 
+sucursales_descripcion varchar(65), 
+sucursales_direccion varchar(65), 
+primary key(id_sucursales)); 
+
+
+create table cabeceras(
+id_cabeceras int not null auto_increment, 
+fecha_venta date not null, 
+rela_productos int not null, 
+rela_rubros int not null, 
+rela_sucursales int not null, 
+primary key(id_cabeceras)); 
+
+
+
+insert into productos 
+(productos_descripcion, productos_pu, productos_estado, productos_estado_vencimiento) 
+values
+('Yogurt', '5000.00', 'Alta', 'Apto'), 
+('Queso', '5000.00', 'Alta', 'Apto'), 
+('Arroz', '3000.00', 'Alta', 'Apto'), 
+('Arroz', '3000.00', 'Alta', 'Apto');
+ 
+ 
+insert into rubros (rubros_descripcion) values 
+('Ferreteria'), 
+('Jugueteria'),
+('Supermercado');
+
+
+insert into sucursales (sucursales_descripcion, sucursales_direccion) values 
+('Cacerez', 'Fontana 00');
+
+
+insert into  cabeceras (fecha_venta, rela_productos, rela_rubros, rela_sucursales) values 
+('2024-06-25', 1, 3, 1), 
+('2024-09-14', 2, 3, 1),
+('2024-09-14', 3, 3, 1),
+('2024-09-14', 4, 3, 1);
+
+
+SELECT c.fecha_venta,
+       p.productos_descripcion,
+       r.rubros_descripcion,
+       s.sucursales_descripcion
+FROM cabeceras c INNER JOIN productos p ON rela_productos = id_cabeceras
+INNER JOIN rubros r ON rela_rubros = id_rubros
+INNER JOIN sucursales s ON rela_sucursales = id_sucursales
+WHERE id_sucursales = 1
+AND fecha_venta = CURDATE();
+
